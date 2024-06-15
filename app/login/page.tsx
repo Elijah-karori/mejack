@@ -1,6 +1,7 @@
 'use client'; // Marking this file as a Client Component
 
 import { useState } from 'react';
+import { useAuth } from '../context/auth';
 
 type LoginResponse = {
     access_token: string;
@@ -10,27 +11,12 @@ type LoginResponse = {
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const { login, error } = useAuth();
+    
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        try {
-            const response = await fetch('http://127.0.0.1:8000/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username: email, password }),
-            });
-            if (!response.ok) {
-                throw new Error('Invalid credentials');
-            }
-            const data: LoginResponse = await response.json();
-            console.log('Login successful:', data);
-            // Redirect or perform additional actions upon successful login
-        } catch (error:any) {
-            setError(error.message);
-        }
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+      await login(email, password);
     };
 
     return (

@@ -6,15 +6,17 @@ export default function RegisterComponent() {
   // Rest of your component code using useState
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone_number, setPhone] = useState('');
   const [role, setRole] = useState('');
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/register', {
+      const response = await fetch('http://localhost:8000/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, role }),
+        body: JSON.stringify({ email, password, role, phone_number }),
       });
       if (!response.ok) {
         throw new Error('Registration failed');
@@ -38,6 +40,12 @@ export default function RegisterComponent() {
           <div className="flex items-center justify-between">
           <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="email" value={email} onChange={(e) => setEmail(e.target.value)}  />
         </div></div>
+        
+         <div className="flex items-center justify-between">
+          <label className="block text-sm font-medium leading-6 text-gray-900">Phone Number:</label>
+          <div className="flex items-center justify-between">
+          <input type="number" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value={phone_number} onChange={(e) => setPhone(e.target.value)} /></div>
+        </div>
         <div className="flex items-center justify-between">
           <label className="block text-sm font-medium leading-6 text-gray-900">Password:</label>
           <div className="flex items-center justify-between">
